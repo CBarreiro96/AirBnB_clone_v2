@@ -34,24 +34,25 @@ class DBStorage:
     def all(self, cls=None):
         """List all objects of a given Class"""
         if cls is None:
-            objs = self.__session.query(User).all()
-            objs.extend = (self.__session.query(State).all())
-            objs.extend = (self.__session.query(City).all())
-            objs.extend = (self.__session.query(Amenity).all())
-            objs.extend = (self.__session.query(Place).all())
-            objs.extend = (self.__session.query(Review).all())
+            self.__objs = self.__session.query(User).all()
+            self.__objs.extend = (self.__session.query(State).all())
+            self.__objs.extend = (self.__session.query(City).all())
+            self.__objs.extend = (self.__session.query(Amenity).all())
+            self.__objs.extend = (self.__session.query(Place).all())
+            self.__objs.extend = (self.__session.query(Review).all())
         else:
             if type(cls) == str:
-                objs = self.__session.query(cls)
-        dict = {"{}.{}".format(obj.__class__.name__, obj.id):
-                obj for obj in objs}
-        return dict
+                cls = eval(cls)
+            self.__objs = self.__session.query(cls)
+        dictionary = {"{}.{}".format(obj.__class__.__name__, obj.id):
+                      obj for obj in self.__objs}
+        return dictionary
 
     def new(self, obj):
         """Add a new object to database"""
         self.__session.add(obj)
 
-    def save(self, obj):
+    def save(self):
         """Commit to database"""
         self.__session.commit()
 
