@@ -18,6 +18,7 @@ from sqlalchemy.orm import relationship
 class DBStorage:
     __engine = None
     __session = None
+    __objects = {}
 
     def __init__(self):
         self.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}".
@@ -31,6 +32,7 @@ class DBStorage:
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
+        """List all objects of a given Class"""
         if cls is None:
             objs = self.__session.query(User).all()
             objs.extend = (self.__session.query(State).all())
@@ -41,21 +43,25 @@ class DBStorage:
         else:
             if type(cls) == str:
                 objs = self.__session.query(cls)
-        dict = {"{}.{}".format(obj.__class__.name__, obj.id):\
-                               obj for obj in objs}
+        dict = {"{}.{}".format(obj.__class__.name__, obj.id):
+                obj for obj in objs}
         return dict
 
     def new(self, obj):
+        """Add a new object to database"""
         self.__session.add(obj)
 
     def save(self, obj):
+        """Commit to database"""
         self.__session.commit()
 
     def delete(self, obj):
+        """Deletethe obj from database"""
         if obj is not None:
             self.__session.delete(obj)
 
     def reload(self):
+        """Initialize the database"""
         Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(bind=self.__engine,
                                        expire_on_commit=False)
