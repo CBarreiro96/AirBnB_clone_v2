@@ -15,7 +15,6 @@ class BaseModel:
     created_at = Column(DateTime, nullable=False, default=datetime.utcnow())
     updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
 
-
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""
         if not kwargs:
@@ -52,7 +51,7 @@ class BaseModel:
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
         if '_sa_instance_state' in dictionary:
-            dictionary.pop(_sa_instance_state)
+            dictionary.pop("_sa_instance_state")
         return dictionary
 
     def delete(self):
