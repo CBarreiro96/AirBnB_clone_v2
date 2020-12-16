@@ -228,19 +228,20 @@ class HBNBCommand(cmd.Cmd):
         # except NameError:
         #     print("** class doesn't exist **")
 
-        if args:
-            args = args.split(' ')[0]  # remove possible trailing args
-            if args not in HBNBCommand.classes:
-                print("** class doesn't exist **")
-                return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
+        arg = args.split(" ")
+        obj_list = []
+        if not args:
+            obj_dict = models.storage.all()
+        elif arg[0] in self.classes:
+            obj_dict = storage.all(self.classes[arg[0]])
         else:
-            for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
-
-        print(print_list)
+            print("** class doesn't exist **")
+            return False
+        for key in obj_dict:
+            obj_list.append(str(obj_dict[key]))
+        print("[", end="")
+        print(", ".join(obj_list), end="")
+        print("]")
 
     def help_all(self):
         """ Help information for the all command """
