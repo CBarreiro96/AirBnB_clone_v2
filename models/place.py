@@ -10,17 +10,18 @@ from sqlalchemy import String
 from sqlalchemy import Table
 from os import getenv
 from sqlalchemy.orm import relationship, backref
+from models.review import Review
+from models.amenity import Amenity
+
 
 place_amenity = Table('place_amenity', Base.metadata,
                       Column('place_id',
                              String(60),
                              ForeignKey('places.id'),
-                             primary_key=True,
                              nullable=False),
                       Column('amenity_id',
                              String(60),
                              ForeignKey('amenities.id'),
-                             primary_key=True,
                              nullable=False))
 
 
@@ -37,6 +38,7 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, default=0, nullable=False)
     latitude = Column(Float, nullable=False)
     longitude = Column(Float, nullable=False)
+
 
 if getenv('HBNB_TYPE_STORAGE') == "db":
     reviews = relationship('Review', backref='place',
@@ -65,7 +67,7 @@ else:
         attribute amenity_ids that contains all Amenity.id
         linked to the Place
         """
-        all_amenities = models.storage.all(Amenity)
+        all_amenities = models.storage.all(Review)
         place_amenities = []
         for amenity_ins in all_amenities.values():
             if amenity_ins.place_id == self.id:
@@ -79,5 +81,5 @@ else:
         Handles append method for adding an Amenity.id to the attribute
         amenity_ids
         """
-        if isinstance(amenity_obj, models.Amenity):
+        if isinstance(amenity_obj, Amenity):
             self.amenities.append(amenity_obj.id)

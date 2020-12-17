@@ -16,11 +16,13 @@ from sqlalchemy.orm import relationship
 
 
 class DBStorage:
+    """Manages databse storage for AirBnB clone"""
     __engine = None
     __session = None
     __objects = {}
 
     def __init__(self):
+        """Constructor"""
         self.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}".
                                       format(getenv("HBNB_MYSQL_USER"),
                                              getenv("HBNB_MYSQL_PWD"),
