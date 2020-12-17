@@ -10,6 +10,8 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+from models.engine.db_storage import DBStorage
+from models.engine.file_storage import FileStorage
 
 
 class HBNBCommand(cmd.Cmd):
@@ -114,33 +116,25 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
-            print("** class name missing **")
-            return
-
-        parts = args.split()
-        """ check if arg[0] a class """
-        if parts[0] not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
-        """ if it is create it and set params"""
-        new_instance = HBNBCommand.classes[parts[0]]()
-        if len(parts) > 1:
-            for param in parts[1:]:
-                if "=" not in param or param[0] is "=" or param[-1] is "=":
+        if args:
+            list_attr = args.split(" ")
+            classname = list_attr[0]
+            if classname not in self.classes:
+                print("** class doesn't exist **")
+                return
+            new_instance = eval("{}()".format(classname))
+            for ins in (list_attr):
+                attribute = ins.split('=')
+                if hasattr(new_instance, attribute[0]):
+                    val = attribute[1].replace('_', ' ')
+                    val = val.replace('"', '')
+                    setattr(new_instance, attribute[0], val)
+                else:
                     continue
-                params = param.split("=")
-                if params[1][0] is "\"":
-                    params[1] = params[1].replace("_", " ")
-                    setattr(new_instance, params[0], params[1])
-                    continue
-                if "." in params[1]:
-                    setattr(new_instance, params[0], float(params[1]))
-                    continue
-                setattr(new_instance, params[0], int(params[1]))
-        storage.new(new_instance)
-        print(new_instance.id)
-        storage.save()
+            print(new_instance.id)
+            new_instance.save()
+        else:
+            print('** class name missing **')
 
     def help_create(self):
         """ Help information for the create method """

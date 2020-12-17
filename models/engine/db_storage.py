@@ -35,11 +35,11 @@ class DBStorage:
         """List all objects of a given Class"""
         if cls is None:
             self.__objs = self.__session.query(User).all()
-            self.__objs.extend = (self.__session.query(State).all())
-            self.__objs.extend = (self.__session.query(City).all())
-            self.__objs.extend = (self.__session.query(Amenity).all())
-            self.__objs.extend = (self.__session.query(Place).all())
-            self.__objs.extend = (self.__session.query(Review).all())
+            self.__objs.extend(self.__session.query(State).all())
+            self.__objs.extend(self.__session.query(City).all())
+            self.__objs.extend(self.__session.query(Amenity).all())
+            self.__objs.extend(self.__session.query(Place).all())
+            self.__objs.extend(self.__session.query(Review).all())
         else:
             if type(cls) == str:
                 cls = eval(cls)
@@ -68,3 +68,7 @@ class DBStorage:
                                        expire_on_commit=False)
         Session = scoped_session(session_factory)
         self.__session = Session()
+
+    def close(self):
+        """Removes the session"""
+        self.__session.close()
