@@ -2,10 +2,13 @@
 """
 File- to practice use of Fabric
 """
+
+
 import os.path
 from fabric.api import *
 from fabric.operations import run, put, sudo
 import time
+
 env.hosts = ['35.185.122.18', '35.237.15.1']
 
 
