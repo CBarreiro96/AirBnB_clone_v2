@@ -12,7 +12,6 @@ import time
 env.hosts = ['35.185.122.18', '35.237.15.1']
 
 
-
 @runs_once
 def do_pack():
 
