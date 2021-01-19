@@ -26,7 +26,7 @@ def c_is_fun(text):
 @app.route('/python/<text>', strict_slashes=False)
 def Python_is_cool(text='is_cool'):
     '''Prints a message when /python is called'''
-    return "python "+ text.replace('_', ' ')
+    return "python " + text.replace('_', ' ')
 
 
 @app.route('/number/<int:n>', strict_slashes=False)
@@ -37,4 +37,3 @@ def Is_it_a_number(n):
 if __name__ == "__main__":
     """ Main Function """
     app.run(host='0.0.0.0', port=5000)
-
