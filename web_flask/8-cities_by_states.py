@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" Starts a Flash """
+""" Starts a Flask """
 from models import storage
 from models.state import State
 from os import environ

@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" Starts a Flash Web Application [Is it a number?]"""
+""" Starts a Flask Web Application [Is it a number?]"""
 from flask import Flask
 app = Flask(__name__)
 

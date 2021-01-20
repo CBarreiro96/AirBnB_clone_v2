@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" Starts a Flash Web Application [ Number template]"""
+""" Starts a Flask Web Application [ Number template]"""
 from flask import Flask, render_template
 app = Flask(__name__)
 
